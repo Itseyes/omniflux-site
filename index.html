@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>OmniFlux Digital – AI-Native Automation & Agent Systems</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="OmniFlux Digital is a tech startup building AI-native automation products powered by its own agent platform, AgenticOS. Products include Omega Forge and FlowTwin."
+  />
+  <style>
+    :root {
+      --bg: #050711;
+      --bg-alt: #0b0f1d;
+      --accent: #4ade80;
+      --accent-soft: rgba(74, 222, 128, 0.12);
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --border: #1f2933;
+      --radius: 14px;
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
+      --max-width: 1060px;
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-main);
+      background: radial-gradient(circle at top, #111827 0%, #020617 46%, #000 100%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .page { min-height: 100vh; display: flex; flex-direction: column; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(to bottom, rgba(3, 7, 18, 0.95), rgba(3, 7, 18, 0.4));
+      border-bottom: 1px solid rgba(31, 41, 55, 0.8);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 10%, #bbf7d0 0, #22c55e 40%, #16a34a 70%, #0f766e 100%);
+      box-shadow: 0 0 30px rgba(34, 197, 94, 0.8);
+    }
+
+    .brand-title {
+      font-weight: 650;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .brand-sub {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .nav-links a {
+      padding: 4px 0;
+      border-bottom: 1px solid transparent;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      border-color: rgba(148, 163, 184, 0.6);
+    }
+
+    .nav-cta {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 0.85rem;
+      color: var(--muted);
+      background: rgba(15, 23, 42, 0.7);
+    }
+
+    .nav-cta:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    main { flex: 1; }
+
+    .section {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 32px 18px;
+    }
+
+    .hero {
+      padding-top: 42px;
+      padding-bottom: 36px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      gap: 32px;
+      align-items: center;
+    }
+
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: minmax(0, 1fr); }
+      header { position: static; }
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      line-height: 1.1;
+      margin: 0 0 14px;
+    }
+
+    @media (min-width: 960px) {
+      .hero h1 { font-size: 2.4rem; }
+    }
+
+    .hero p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 0.98rem;
+      max-width: 540px;
+    }
+
+    .hero-highlight { color: var(--accent); }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .btn-primary,
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        border-color 0.12s ease,
+        background 0.12s ease,
+        color 0.12s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: #022c22;
+      font-weight: 600;
+      box-shadow: 0 14px 35px rgba(22, 163, 74, 0.6);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(22, 163, 74, 0.8);
+      border-color: #bbf7d0;
+    }
+
+    .btn-ghost {
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--muted);
+      border-color: rgba(75, 85, 99, 0.8);
+    }
+
+    .btn-ghost:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(15, 23, 42, 0.98);
+    }
+
+    .hero-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .hero-meta strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .hero-panel {
+      border-radius: 22px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background:
+        radial-gradient(circle at top left, rgba(34, 197, 94, 0.12), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.12), transparent 55%),
+        #020617;
+      padding: 18px 18px 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .hero-panel-chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(75, 85, 99, 0.85);
+    }
+
+    .hero-panel-body {
+      font-size: 0.8rem;
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 14px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+
+    .hero-panel-body code {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      font-size: 0.74rem;
+      color: #e5e7eb;
+    }
+
+    .hero-panel-footer {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 10px;
+      font-size: 0.75rem;
+    }
+
+    @media (max-width: 860px) {
+      .hero-panel-footer { grid-template-columns: 1fr; }
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-right: 6px;
+      margin-bottom: 4px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .section-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .section-title-row h2 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    .section-sub {
+      font-size: 0.88rem;
+      color: var(--muted);
+      max-width: 480px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    @media (max-width: 960px) {
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      .cards { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    .card {
+      border-radius: var(--radius);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 14px 14px 12px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+    }
+
+    .card h3 {
+      margin: 0 0 4px;
+      font-size: 1rem;
+    }
+
+    .card-pill {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 0.86rem;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+
+    .card ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.82rem;
+      color: #9ca3af;
+    }
+
+    .card ul li + li { margin-top: 4px; }
+
+    .stack-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .stack-pill {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: var(--muted);
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 860px) {
+      .how-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    .steps {
+      display: grid;
+      gap: 10px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .step-badge {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      border: 1px solid rgba(75, 85, 99, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: #e5e7eb;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .step-title {
+      font-size: 0.88rem;
+      color: #e5e7eb;
+      margin-bottom: 2px;
+    }
+
+    .status-card {
+      border-radius: var(--radius);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+      padding: 14px;
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .status-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #6b7280;
+    }
+
+    .status-value {
+      font-weight: 500;
+      color: #e5e7eb;
+    }
+
+    .status-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(74, 222, 128, 0.65);
+      color: #bbf7d0;
+      margin-top: 6px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 860px) {
+      .gallery-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    .gallery-main {
+      border-radius: var(--radius);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 10px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .gallery-main img {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .thumb-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .thumb {
+      border-radius: 10px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 8px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .thumb img {
+      width: 100%;
+      border-radius: 7px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .founder-card {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 16px;
+      align-items: center;
+      border-radius: var(--radius);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+      padding: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .founder-card { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top, #22c55e, #16a34a 40%, #0f172a 100%);
+      border: 2px solid #22c55e;
+      box-shadow: 0 0 32px rgba(34, 197, 94, 0.8);
+    }
+
+    .founder-name {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .founder-role {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .founder-text {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .founder-links {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .founder-links a { color: var(--accent); }
+
+    .contact-card {
+      margin-top: 14px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .contact-card strong { color: #e5e7eb; }
+
+    footer {
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 14px 18px 18px;
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+
+    .footer-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="nav-inner">
+        <div class="brand">
+          <div class="brand-logo"></div>
+          <div>
+            <div class="brand-title">OMNIFLUX DIGITAL</div>
+            <div class="brand-sub">AI-Native Automation & Agent Systems</div>
+          </div>
+        </div>
+        <nav class="nav-links">
+          <a href="#product">Products</a>
+          <a href="#platform">Platform</a>
+          <a href="#screens">Screenshots</a>
+          <a href="#founder">Founder</a>
+        </nav>
+        <a href="#contact" class="nav-cta">Contact</a>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="section hero">
+        <div>
+          <div class="pill">
+            <span class="pill-dot"></span>
+            AI-First Tech Startup · Building Our Own Products
+          </div>
+          <h1>
+            OmniFlux Digital builds <span class="hero-highlight">AI-native products and agent
+            systems</span> for automated video, content, and growth.
+          </h1>
+          <p>
+            We’re a digital-native product studio. Everything we build runs on our own agent
+            platform, <strong>AgenticOS</strong> — starting with <strong>Omega Forge</strong>
+            (short-form video factory for trades) and <strong>FlowTwin</strong>
+            (AI spokesperson & content engine).
+          </p>
+          <div class="hero-cta-row">
+            <a href="mailto:YOUR.EMAIL@HERE.com" class="btn-primary">
+              Talk to OmniFlux
+            </a>
+            <a href="#screens" class="btn-ghost">
+              View product screenshots
+            </a>
+          </div>
+          <div class="hero-meta">
+            <strong>Company:</strong> OmniFlux Digital · UK-based, building global SaaS.<br />
+            <strong>Model:</strong> Digital-native software products powered by our own
+            AI agent platform.
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="OmniFlux system summary">
+          <div class="hero-panel-header">
+            <div>OmniFlux · Current Stack Snapshot</div>
+            <div class="hero-panel-chip">Founder-led · Pre-launch</div>
+          </div>
+          <div class="hero-panel-body">
+            <code>
+              {
+              "company": "OmniFlux Digital",<br />
+              &nbsp;&nbsp;"platform": "AgenticOS",<br />
+              &nbsp;&nbsp;"products": ["Omega Forge", "FlowTwin"],<br />
+              &nbsp;&nbsp;"focus": ["video_automation", "ai_spokesperson",
+              "growth_agents"]<br />
+              }
+            </code>
+          </div>
+          <div class="hero-panel-footer">
+            <div>
+              <div style="font-size:0.78rem; color:#9ca3af; margin-bottom:4px;">
+                Products under the OmniFlux banner
+              </div>
+              <div>
+                <span class="tag">
+                  <span class="dot"></span> Omega Forge · TikTok/Shorts video factory
+                </span>
+                <span class="tag">
+                  <span class="dot"></span> FlowTwin · AI spokesperson & script engine
+                </span>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:0.78rem; color:#9ca3af; margin-bottom:4px;">
+                Tech Snapshot
+              </div>
+              <div class="stack-row">
+                <span class="stack-pill">TypeScript · Node</span>
+                <span class="stack-pill">Next.js</span>
+                <span class="stack-pill">Google Cloud · Vertex AI</span>
+                <span class="stack-pill">OpenAI GPT-5</span>
+                <span class="stack-pill">Veo 3 · Suno · ElevenLabs</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- PRODUCTS -->
+      <section class="section" id="product">
+        <div class="section-title-row">
+          <div>
+            <div class="section-label">Product suite</div>
+            <h2>What OmniFlux is building</h2>
+          </div>
+          <div class="section-sub">
+            OmniFlux Digital owns and develops all products in-house. Each product runs on
+            the same agent platform, AgenticOS, giving us one core engine and multiple
+            revenue lines.
+          </div>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <div class="card-pill">Core Platform · Internal infrastructure</div>
+            <h3>AgenticOS – OmniFlux Agent Platform</h3>
+            <p>
+              The internal agent platform that powers every OmniFlux product. It connects
+              language models, video generators, audio tools, and posting APIs into durable,
+              monitored workflows.
+            </p>
+            <ul>
+              <li>Job queues, retries, and lifecycle tracking.</li>
+              <li>Agent workflows for scripting, QA, and publishing.</li>
+              <li>Central place to plug in new models and channels.</li>
+            </ul>
+            <div class="stack-row">
+              <span class="stack-pill">Agent orchestration</span>
+              <span class="stack-pill">Backend platform</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-pill">Product · Internal pilot</div>
+            <h3>Omega Forge – Video Factory for Trades</h3>
+            <p>
+              AI-powered engine that turns local trades (electricians, plumbers, gardeners
+              etc.) into consistent TikTok/Shorts content using cinematic templates and
+              Veo 3.
+            </p>
+            <ul>
+              <li>Job console for video generation & posting.</li>
+              <li>Trade-specific cinematic “bibles” and seasonal packs.</li>
+              <li>Fail-soft design with placeholder videos if APIs fail.</li>
+            </ul>
+            <div class="stack-row">
+              <span class="stack-pill">Veo 3</span>
+              <span class="stack-pill">TikTok API</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-pill">Product · In development</div>
+            <h3>FlowTwin – AI Spokesperson Engine</h3>
+            <p>
+              Learns a creator or brand’s tone, then generates scripts and spokesperson-style
+              content on demand. Built for content creators, educators, and agencies.
+            </p>
+            <ul>
+              <li>Onboarding to capture voice, style, and niche.</li>
+              <li>Idea generation, script drafting, and iteration.</li>
+              <li>Voice and delivery via tools like ElevenLabs.</li>
+            </ul>
+            <div class="stack-row">
+              <span class="stack-pill">OpenAI GPT-5</span>
+              <span class="stack-pill">ElevenLabs</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- PLATFORM / STAGE -->
+      <section class="section" id="platform">
+        <div class="section-title-row">
+          <div>
+            <div class="section-label">Platform & stage</div>
+            <h2>How OmniFlux works & where we are</h2>
+          </div>
+          <div class="section-sub">
+            OmniFlux is founder-led and currently focused on hardening AgenticOS, piloting
+            Omega Forge, and building FlowTwin into a usable beta.
+          </div>
+        </div>
+
+        <div class="how-grid">
+          <div class="steps">
+            <div class="step">
+              <div class="step-badge">1</div>
+              <div>
+                <div class="step-title">AgenticOS as the core</div>
+                <div>
+                  All products share the same AgenticOS core, so improvements to workflow
+                  orchestration, logging, or reliability benefit the entire OmniFlux stack.
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-badge">2</div>
+              <div>
+                <div class="step-title">Products as focused layers</div>
+                <div>
+                  Omega Forge and FlowTwin specialize this core for two clear use-cases:
+                  trades-based short-form video and spokesperson-style content generation.
+                </div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-badge">3</div>
+              <div>
+                <div class="step-title">Iterate with real usage</div>
+                <div>
+                  Early pilots and internal tests feed back into AgenticOS. This loop helps
+                  us turn experiments into a stable, scalable product line under the
+                  OmniFlux banner.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="status-card">
+            <div class="status-row">
+              <div>
+                <div class="status-label">Current stage</div>
+                <div class="status-value">Internal prototype & pre-launch</div>
+              </div>
+              <div>
+                <div class="status-label">Business model</div>
+                <div class="status-value">AI-native SaaS & automation</div>
+              </div>
+            </div>
+            <p>
+              OmniFlux Digital is a digital-native startup. We design, build, and operate our
+              own software products. There is no agency or consulting front-end — our focus is
+              on building scalable, productized tools powered by our own agent platform.
+            </p>
+            <div class="status-tag">
+              <span class="dot"></span>
+              Open to accelerator programs, cloud credits, and early adopter pilots.
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- SCREENSHOTS / DEMO -->
+      <section class="section" id="screens">
+        <div class="section-title-row">
+          <div>
+            <div class="section-label">Screenshots & demos</div>
+            <h2>What the OmniFlux tools look like</h2>
+          </div>
+          <div class="section-sub">
+            Below are UI screenshots from Omega Forge and AgenticOS internal tools. Short
+            video demos can be shared privately for programs and partners.
+          </div>
+        </div>
+
+        <div class="gallery-grid">
+          <div class="gallery-main">
+            <!-- TODO: replace with actual screenshot path -->
+            <img src="omega-forge-console.png" alt="Omega Forge job console screenshot" />
+            <strong>Omega Forge Job Console</strong>
+            <p>
+              The job console shows content generation jobs, status, lifecycle events, and
+              associated artifacts. Built for transparency and reliability when working with
+              multiple AI services.
+            </p>
+          </div>
+          <div>
+            <div class="thumb-row">
+              <!-- TODO: replace with actual screenshot paths -->
+              <div class="thumb">
+                <img src="veo-request-inspector.png" alt="Veo request inspector screenshot" />
+                <strong>Veo Request Inspector</strong>
+                <div>
+                  Internal debugging tool to inspect prompts, parameters, and responses from
+                  Google’s Veo 3 video model for each job.
+                </div>
+              </div>
+              <div class="thumb">
+                <img src="autopilot-settings.png" alt="Autopilot settings panel screenshot" />
+                <strong>Autopilot & Seasonal Packs</strong>
+                <div>
+                  Configure seasonal content packs and autopilot behaviours for different
+                  trades and campaigns.
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:10px; font-size:0.8rem; color:#9ca3af;">
+              <strong>Demo video:</strong> A short screen recording is available on request,
+              showing an Omega Forge job flowing from setup to generated video.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOUNDER -->
+      <section class="section" id="founder">
+        <div class="section-title-row">
+          <div>
+            <div class="section-label">Team</div>
+            <h2>Founder & background</h2>
+          </div>
+          <div class="section-sub">
+            OmniFlux Digital is currently founder-led. Additional team members and advisors
+            will be added as we grow.
+          </div>
+        </div>
+
+        <article class="founder-card">
+          <div class="avatar" aria-hidden="true"></div>
+          <div>
+            <div class="founder-name">Airrone Cunningham</div>
+            <div class="founder-role">Founder & Systems Architect, OmniFlux Digital</div>
+            <p class="founder-text">
+              Self-taught AI systems builder and founder of OmniFlux Digital. Background in
+              hands-on technical and service roles (including appliance repair and warehouse
+              operations) before moving full-time into AI and software.
+            </p>
+            <p class="founder-text">
+              Current focus areas: agent orchestration, video generation pipelines,
+              content automation for small businesses and creators, and building robust
+              internal platforms on Google Cloud and OpenAI.
+            </p>
+            <div class="founder-links">
+               <div class="founder-links">
+                LinkedIn: Profile coming soon (currently being set up).
+           </div>
+           </div>
+          </div>
+        </article>
+
+        <div class="contact-card" id="contact">
+          <p>
+            <strong>Contact:</strong>
+            <a href="mailto:Airrone@axiomrank.com">airrone@Axiomrank.com</a>
+          </p>
+          <p>
+            For cloud programs and partners, we’re happy to share additional technical
+            details, architecture diagrams, and live demos of AgenticOS, Omega Forge, and
+            FlowTwin.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <div>© <span id="year"></span> OmniFlux Digital · All rights reserved.</div>
+        <div>AI-native product studio building agent systems for content & growth.</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
